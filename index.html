@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Physics Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    header {
+      background-color: #333;
+      color: white;
+      padding: 10px;
+      text-align: center;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      background-color: #333;
+      color: white;
+    }
+    .top-bar a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+    }
+    .container {
+      margin: 20px;
+    }
+    .form-container {
+      background-color: #fff;
+      padding: 20px;
+      margin-top: 30px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .calculator input {
+      margin: 5px;
+      padding: 8px;
+      width: 150px;
+    }
+    .calculator button {
+      padding: 10px 15px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .calculator button:hover {
+      background-color: #45a049;
+    }
+    .result {
+      margin-top: 10px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Physics Calculator</h1>
+  </header>
+
+  <div class="top-bar">
+    <div>Made by Barbalat Bogdan</div>
+    <a href="https://kebabun.md" target="_blank">Buy Me A Kebab</a>
+  </div>
+
+  <div class="container">
+    <div class="form-container">
+      <h2>Physics Calculator</h2>
+      <label for="concept">Select Concept:</label>
+      <select id="concept">
+        <option value="speed">Average Speed</option>
+        <option value="acceleration">Acceleration</option>
+        <option value="density">Density</option>
+        <option value="power">Power</option>
+        <option value="force">Force</option>
+        <option value="weight">Weight</option>
+        <option value="pressure">Pressure</option>
+        <option value="kinetic-energy">Kinetic Energy</option>
+        <option value="momentum">Momentum</option>
+        <option value="work">Work</option>
+        <option value="gravitational-energy">Gravitational Potential Energy</option>
+        <option value="mechanical-energy">Mechanical Energy</option>
+        <option value="elastic-potential-energy">Elastic Potential Energy</option>
+        <option value="centripetal-force">Centripetal Force</option>
+        <option value="centripetal-acceleration">Centripetal Acceleration</option>
+        <option value="angular-momentum">Angular Momentum</option>
+        <option value="torque">Torque</option>
+        <option value="work-energy-theorem">Work-Energy Theorem</option>
+      </select>
+
+      <div id="inputs">
+        <!-- Input fields for the selected concept -->
+      </div>
+
+      <button onclick="calculate()">Calculate</button>
+      <p id="result"></p>
+    </div>
+  </div>
+
+  <script>
+    // Function to update input fields based on selected concept
+    function updateInputs() {
+      const concept = document.getElementById("concept").value;
+      const inputsDiv = document.getElementById("inputs");
+      inputsDiv.innerHTML = ""; // Clear previous inputs
+
+      if (concept === "speed") {
+        inputsDiv.innerHTML = ` 
+          <label for="distance">Distance (m): </label>
+          <input type="number" id="distance" placeholder="Enter distance"><br>
+          <label for="time">Time (s): </label>
+          <input type="number" id="time" placeholder="Enter time">
+        `;
+      } else if (concept === "acceleration") {
+        inputsDiv.innerHTML = `
+          <label for="initial-speed">Initial Speed (m/s): </label>
+          <input type="number" id="initial-speed" placeholder="Enter initial speed"><br>
+          <label for="final-speed">Final Speed (m/s): </label>
+          <input type="number" id="final-speed" placeholder="Enter final speed"><br>
+          <label for="time">Time (s): </label>
+          <input type="number" id="accel-time" placeholder="Enter time">
+        `;
+      } else if (concept === "density") {
+        inputsDiv.innerHTML = ` 
+          <label for="mass">Mass (kg): </label>
+          <input type="number" id="mass" placeholder="Enter mass"><br>
+          <label for="volume">Volume (m³): </label>
+          <input type="number" id="volume" placeholder="Enter volume">
+        `;
+      } else if (concept === "power") {
+        inputsDiv.innerHTML = ` 
+          <label for="work">Work (J): </label>
+          <input type="number" id="work" placeholder="Enter work"><br>
+          <label for="time">Time (s): </label>
+          <input type="number" id="power-time" placeholder="Enter time">
+        `;
+      } else if (concept === "force") {
+        inputsDiv.innerHTML = ` 
+          <label for="mass">Mass (kg): </label>
+          <input type="number" id="force-mass" placeholder="Enter mass"><br>
+          <label for="acceleration">Acceleration (m/s²): </label>
+          <input type="number" id="force-accel" placeholder="Enter acceleration">
+        `;
+      } else if (concept === "weight") {
+        inputsDiv.innerHTML = `
+          <label for="mass">Mass (kg): </label>
+          <input type="number" id="weight-mass" placeholder="Enter mass"><br>
+          <label for="gravity">Gravity (m/s²): </label>
+          <input type="number" id="gravity" placeholder="Enter gravity">
+        `;
+      } else if (concept === "pressure") {
+        inputsDiv.innerHTML = `
+          <label for="force">Force (N): </label>
+          <input type="number" id="pressure-force" placeholder="Enter force"><br>
+          <label for="area">Area (m²): </label>
+          <input type="number" id="area" placeholder="Enter area">
+        `;
+      } else if (concept === "kinetic-energy") {
+        inputsDiv.innerHTML = `
+          <label for="mass">Mass (kg): </label>
+          <input type="number" id="ke-mass" placeholder="Enter mass"><br>
+          <label for="speed">Speed (m/s): </label>
+          <input type="number" id="speed" placeholder="Enter speed">
+        `;
+      } else if (concept === "momentum") {
+        inputsDiv.innerHTML = `
+          <label for="mass">Mass (kg): </label>
+          <input type="number" id="mom-mass" placeholder="Enter mass"><br>
+          <label for="velocity">Velocity (m/s): </label>
+          <input type="number" id="mom-velocity" placeholder="Enter velocity">
+        `;
+      } else if (concept === "work") {
+        inputsDiv.innerHTML = `
+          <label for="force">Force (N): </label>
+          <input type="number" id="work-force" placeholder="Enter force"><br>
+          <label for="distance">Distance (m): </label>
+          <input type="number" id="work-distance" placeholder="Enter distance">
+        `;
+      } else if (concept === "gravitational-energy") {
+        inputsDiv.innerHTML = `
+          <label for="mass">Mass (kg): </label>
+          <input type="number" id="ge-mass" placeholder="Enter mass"><br>
+          <label for="height">Height (m): </label>
+          <input type="number" id="height" placeholder="Enter height"><br>
+          <label for="gravity">Gravity (m/s²): </label>
+          <input type="number" id="ge-gravity" placeholder="Enter gravity">
+        `;
+      } else if (concept === "mechanical-energy") {
+        inputsDiv.innerHTML = `
+          <label for="kinetic-energy">Kinetic Energy (J): </label>
+          <input type="number" id="me-kinetic-energy" placeholder="Enter kinetic energy"><br>
+          <label for="potential-energy">Potential Energy (J): </label>
+          <input type="number" id="me-potential-energy" placeholder="Enter potential energy">
+        `;
+      } else if (concept === "elastic-potential-energy") {
+        inputsDiv.innerHTML = `
+          <label for="spring-constant">Spring Constant (N/m): </label>
+          <input type="number" id="spring-constant" placeholder="Enter spring constant"><br>
+          <label for="displacement">Displacement (m): </label>
+          <input type="number" id="displacement" placeholder="Enter displacement">
+        `;
+      } else if (concept === "centripetal-force") {
+        inputsDiv.innerHTML = `
+          <label for="mass">Mass (kg): </label>
+          <input type="number" id="cf-mass" placeholder="Enter mass"><br>
+          <label for="velocity">Velocity (m/s): </label>
+          <input type="number" id="cf-velocity" placeholder="Enter velocity"><br>
+          <label for="radius">Radius (m): </label>
+          <input type="number" id="radius" placeholder="Enter radius">
+        `;
+      } else if (concept === "centripetal-acceleration") {
+        inputsDiv.innerHTML = `
+          <label for="velocity">Velocity (m/s): </label>
+          <input type="number" id="ca-velocity" placeholder="Enter velocity"><br>
+          <label for="radius">Radius (m): </label>
+          <input type="number" id="ca-radius" placeholder="Enter radius">
+        `;
+      } else if (concept === "angular-momentum") {
+        inputsDiv.innerHTML = `
+          <label for="mass">Mass (kg): </label>
+          <input type="number" id="am-mass" placeholder="Enter mass"><br>
+          <label for="velocity">Velocity (m/s): </label>
+          <input type="number" id="am-velocity" placeholder="Enter velocity"><br>
+          <label for="radius">Radius (m): </label>
+          <input type="number" id="am-radius" placeholder="Enter radius">
+        `;
+      } else if (concept === "torque") {
+        inputsDiv.innerHTML = `
+          <label for="force">Force (N): </label>
+          <input type="number" id="torque-force" placeholder="Enter force"><br>
+          <label for="radius">Radius (m): </label>
+          <input type="number" id="torque-radius" placeholder="Enter radius">
+        `;
+      } else if (concept === "work-energy-theorem") {
+        inputsDiv.innerHTML = `
+          <label for="force">Force (N): </label>
+          <input type="number" id="w-e-force" placeholder="Enter force"><br>
+          <label for="distance">Distance (m): </label>
+          <input type="number" id="w-e-distance" placeholder="Enter distance"><br>
+          <label for="initial-velocity">Initial Velocity (m/s): </label>
+          <input type="number" id="w-e-initial-velocity" placeholder="Enter initial velocity"><br>
+          <label for="final-velocity">Final Velocity (m/s): </label>
+          <input type="number" id="w-e-final-velocity" placeholder="Enter final velocity">
+        `;
+      }
+    }
+
+    function calculate() {
+      const concept = document.getElementById("concept").value;
+      let result = "";
+
+      if (concept === "speed") {
+        const distance = parseFloat(document.getElementById("distance").value);
+        const time = parseFloat(document.getElementById("time").value);
+        if (isNaN(distance) || isNaN(time) || time === 0) {
+          result = "Please enter valid values!";
+        } else {
+          result = `Speed = ${distance / time} m/s`;
+        }
+      } else if (concept === "acceleration") {
+        const initialSpeed = parseFloat(document.getElementById("initial-speed").value);
+        const finalSpeed = parseFloat(document.getElementById("final-speed").value);
+        const time = parseFloat(document.getElementById("accel-time").value);
+        if (isNaN(initialSpeed) || isNaN(finalSpeed) || isNaN(time) || time === 0) {
+          result = "Please enter valid values!";
+        } else {
+          result = `Acceleration = ${(finalSpeed - initialSpeed) / time} m/s²`;
+        }
+      } else if (concept === "density") {
+        const mass = parseFloat(document.getElementById("mass").value);
+        const volume = parseFloat(document.getElementById("volume").value);
+        if (isNaN(mass) || isNaN(volume) || volume === 0) {
+          result = "Please enter valid values!";
+        } else {
+          result = `Density = ${mass / volume} kg/m³`;
+        }
+      } else if (concept === "power") {
+        const work = parseFloat(document.getElementById("work").value);
+        const time = parseFloat(document.getElementById("power-time").value);
+        if (isNaN(work) || isNaN(time) || time === 0) {
+          result = "Please enter valid values!";
+        } else {
+          result = `Power = ${work / time} W`;
+        }
+      } else if (concept === "force") {
+        const mass = parseFloat(document.getElementById("force-mass").value);
+        const acceleration = parseFloat(document.getElementById("force-accel").value);
+        if (isNaN(mass) || isNaN(acceleration)) {
+          result = "Please enter valid values!";
+        } else {
+          result = `Force = ${mass * acceleration} N`;
+        }
+      } else if (concept === "weight") {
+        const mass = parseFloat(document.getElementById("weight-mass").value);
+        const gravity = parseFloat(document.getElementById("gravity").value);
+        if (isNaN(mass) || isNaN(gravity)) {
+          result = "Please enter valid values!";
+        } else {
+          result = `Weight = ${mass * gravity} N`;
+        }
+      } else if (concept === "pressure") {
+        const force = parseFloat(document.getElementById("pressure-force").value);
+        const area = parseFloat(document.getElementById("area").value);
+        if (isNaN(force) || isNaN(area) || area === 0) {
+          result = "Please enter valid values!";
+        } else {
+          result = `Pressure = ${force / area} Pa`;
+        }
+      } else if (concept === "kinetic-energy") {
+        const mass = parseFloat(document.getElementById("ke-mass").value);
+        const speed = parseFloat(document.getElementById("speed").value);
+        if (isNaN(mass) || isNaN(speed)) {
+          result = "Please enter valid values!";
+        } else {
+          result = `Kinetic Energy = ${(0.5 * mass * speed ** 2).toFixed(2)} J`;
+        }
+      } else if (concept === "momentum") {
+        const mass = parseFloat(document.getElementById("mom-mass").value);
+        const velocity = parseFloat(document.getElementById("mom-velocity").value);
+        if (isNaN(mass) || isNaN(velocity)) {
+          result = "Please enter valid values!";
+        } else {
+          result = `Momentum = ${(mass * velocity).toFixed(2)} kg·m/s`;
+        }
+      } else if (concept === "work") {
+        const force = parseFloat(document.getElementById("work-force").value);
+        const distance = parseFloat(document.getElementById("work-distance").value);
+        if (isNaN(force) || isNaN(distance)) {
+          result = "Please enter valid values!";
+        } else {
+          result = `Work = ${(force * distance).toFixed(2)} J`;
+        }
+      } else if (concept === "gravitational-energy") {
+        const mass = parseFloat(document.getElementById("ge-mass").value);
+        const height = parseFloat(document.getElementById("height").value);
+        const gravity = parseFloat(document.getElementById("ge-gravity").value);
+        if (isNaN(mass) || isNaN(height) || isNaN(gravity)) {
+          result = "Please enter valid values!";
+        } else {
+          result = `Gravitational Potential Energy = ${(mass * gravity * height).toFixed(2)} J`;
+        }
+      } else if (concept === "mechanical-energy") {
+        const kineticEnergy = parseFloat(document.getElementById("me-kinetic-energy").value);
+        const potentialEnergy = parseFloat(document.getElementById("me-potential-energy").value);
+        if (isNaN(kineticEnergy) || isNaN(potentialEnergy)) {
+          result = "Please enter valid values!";
+        } else {
+          result = `Mechanical Energy = ${(kineticEnergy + potentialEnergy).toFixed(2)} J`;
+        }
+      } else if (concept === "elastic-potential-energy") {
+        const springConstant = parseFloat(document.getElementById("spring-constant").value);
+        const displacement = parseFloat(document.getElementById("displacement").value);
+        if (isNaN(springConstant) || isNaN(displacement)) {
+          result = "Please enter valid values!";
+        } else {
+          result = `Elastic Potential Energy = ${(0.5 * springConstant * displacement ** 2).toFixed(2)} J`;
+        }
+      } else if (concept === "centripetal-force") {
+        const mass = parseFloat(document.getElementById("cf-mass").value);
+        const velocity = parseFloat(document.getElementById("cf-velocity").value);
+        const radius = parseFloat(document.getElementById("radius").value);
+        if (isNaN(mass) || isNaN(velocity) || isNaN(radius)) {
+          result = "Please enter valid values!";
+        } else {
+          result = `Centripetal Force = ${(mass * velocity ** 2) / radius} N`;
+        }
+      } else if (concept === "centripetal-acceleration") {
+        const velocity = parseFloat(document.getElementById("ca-velocity").value);
+        const radius = parseFloat(document.getElementById("ca-radius").value);
+        if (isNaN(velocity) || isNaN(radius)) {
+          result = "Please enter valid values!";
+        } else {
+          result = `Centripetal Acceleration = ${(velocity ** 2) / radius} m/s²`;
+        }
+      } else if (concept === "angular-momentum") {
+        const mass = parseFloat(document.getElementById("am-mass").value);
+        const velocity = parseFloat(document.getElementById("am-velocity").value);
+        const radius = parseFloat(document.getElementById("am-radius").value);
+        if (isNaN(mass) || isNaN(velocity) || isNaN(radius)) {
+          result = "Please enter valid values!";
+        } else {
+          result = `Angular Momentum = ${(mass * velocity * radius).toFixed(2)} kg·m²/s`;
+        }
+      } else if (concept === "torque") {
+        const force = parseFloat(document.getElementById("torque-force").value);
+        const radius = parseFloat(document.getElementById("torque-radius").value);
+        if (isNaN(force) || isNaN(radius)) {
+          result = "Please enter valid values!";
+        } else {
+          result = `Torque = ${(force * radius).toFixed(2)} N·m`;
+        }
+      } else if (concept === "work-energy-theorem") {
+        const force = parseFloat(document.getElementById("w-e-force").value);
+        const distance = parseFloat(document.getElementById("w-e-distance").value);
+        const initialVelocity = parseFloat(document.getElementById("w-e-initial-velocity").value);
+        const finalVelocity = parseFloat(document.getElementById("w-e-final-velocity").value);
+        if (isNaN(force) || isNaN(distance) || isNaN(initialVelocity) || isNaN(finalVelocity)) {
+          result = "Please enter valid values!";
+        } else {
+          result = `Work-Energy Theorem = ${(force * distance) + (0.5 * (Math.pow(finalVelocity, 2) - Math.pow(initialVelocity, 2)))} J`;
+        }
+      }
+
+      document.getElementById("result").innerText = result;
+    }
+
+    updateInputs(); // Initialize the inputs when the page loads
+
+    // Update input fields when the user selects a new concept
+    document.getElementById("concept").addEventListener("change", updateInputs);
+  </script>
+</body>
+</html>
